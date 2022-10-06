@@ -2,6 +2,7 @@
 Requisitos e Arquiteturas de Software project in which we created an WebApp for betting.
 
 :busts_in_silhouette: Authors:
+
 [Catarina Martins](https://github.com/CatarinaMorales)
 
 [Gabriela Prata](https://github.com/GabrielaPrata)
