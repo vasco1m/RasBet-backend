@@ -9,6 +9,8 @@ Requisitos e Arquiteturas de Software project in which we created an WebApp for 
 
 [Vasco Matos](https://github.com/vasco1m)
 
+[Francisco Paiva](https://github.com/Francisco-Paiva)
+
 :computer: To run use:
 
 ```bash
