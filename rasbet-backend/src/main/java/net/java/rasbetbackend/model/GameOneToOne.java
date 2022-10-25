@@ -1,13 +1,30 @@
 package net.java.rasbetbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
+@Entity
+@Table(name = "gameOneToOne",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idGame")
+        })
 public class GameOneToOne {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGame;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate date;
-    private String category;
+    @NotNull
     private String tpA;
+    @NotNull
     private String tpB;
+
+    public GameOneToOne() {
+
+    }
 
     public int getIdGame() {
         return idGame;
@@ -25,13 +42,6 @@ public class GameOneToOne {
         this.date = date;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 
     public String getTpA() {
         return tpA;
@@ -49,10 +59,9 @@ public class GameOneToOne {
         this.tpB = tpB;
     }
 
-    public GameOneToOne(int idGame, LocalDate date, String category, String tpA, String tpB) {
+    public GameOneToOne(int idGame, LocalDate date, String tpA, String tpB) {
         this.idGame = idGame;
         this.date = date;
-        this.category = category;
         this.tpA = tpA;
         this.tpB = tpB;
     }

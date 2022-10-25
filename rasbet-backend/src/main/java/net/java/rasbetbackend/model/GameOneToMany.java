@@ -1,13 +1,32 @@
 package net.java.rasbetbackend.model;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "gameOneToMany",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idGame")
+        })
 public class GameOneToMany {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGame;
-    private LocalDate dateTime;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dateTime;
+    @NotBlank
     private String name;
-    private String category;
+    @NotNull
     private boolean draw;
+
+    public GameOneToMany() {
+
+    }
 
     public int getIdGame() {
         return idGame;
@@ -17,11 +36,11 @@ public class GameOneToMany {
         this.idGame = idGame;
     }
 
-    public LocalDate getDateTime() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(LocalDate dateTime) {
+    public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -33,14 +52,6 @@ public class GameOneToMany {
         this.name = name;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public boolean isDraw() {
         return draw;
     }
@@ -49,11 +60,10 @@ public class GameOneToMany {
         this.draw = draw;
     }
 
-    public GameOneToMany(int idGame, LocalDate dateTime, String name, String category, boolean draw) {
+    public GameOneToMany(int idGame, LocalDateTime dateTime, String name, boolean draw) {
         this.idGame = idGame;
         this.dateTime = dateTime;
         this.name = name;
-        this.category = category;
         this.draw = draw;
     }
 }

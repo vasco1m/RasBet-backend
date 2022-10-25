@@ -1,22 +1,57 @@
 package net.java.rasbetbackend.model;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import net.java.rasbetbackend.exception.AgeException;
 
+import javax.persistence.*;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "user",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "username"),
+                @UniqueConstraint(columnNames = "email")
+        })
 public class User {
 
+    @Id
     private int nif;
+    @NotBlank
+    @Size(max = 20)
     private String username;
+    @NotBlank
+    @Size(max = 50)
+    @Email(message = "Email should be valid")
     private String email;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate bornDate;
-    private int type;
+    @NotBlank
+    @Size(max = 120)
+    private String password;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(  name = "user_role",
+        joinColumns = @JoinColumn(name = "user_nif"),
+        inverseJoinColumns = @JoinColumn(name = "roles_id"))
+    private Set<Role> roles = new HashSet<>();
 
-    public User (int nif, String username, String email, LocalDate bornDate, int type){
-        this.nif=nif;
-        this.username=username;
-        this.email=email;
-        this.bornDate=bornDate;
+    public User (int nif, String username, String email, String password, LocalDate bornDate) throws Exception {
+        this.nif = nif;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        if(bornDate.isBefore(LocalDate.now().minus(Period.ofYears(18)))) this.bornDate = bornDate;
+        else throw new AgeException();
     }
-    public int getNif() {
+
+    public User() {
+
+    }
+
+    public long getNif() {
         return nif;
     }
 
@@ -48,11 +83,19 @@ public class User {
         this.bornDate = bornDate;
     }
 
-    public int getType() {
-        return type;
+    public String getPassword() {
+        return password;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

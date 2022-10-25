@@ -1,9 +1,25 @@
 package net.java.rasbetbackend.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "category",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idGame")
+        })
 public class Game {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idGame;
+    @NotNull
     private boolean type;
+    @NotNull
     private int idCategory;
+
+    public Game() {
+
+    }
 
     public int getIdGame() {
         return idGame;

@@ -1,13 +1,33 @@
 package net.java.rasbetbackend.model;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "notification",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idNotification")
+        })
 public class Notification {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idNotification;
+    @NotNull
     private int nif;
-    private LocalDate date;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime date;
+    @NotBlank
     private String title;
+    @NotBlank
     private String description;
+
+    public Notification() {
+
+    }
 
     public int getIdNotification() {
         return idNotification;
@@ -25,11 +45,11 @@ public class Notification {
         this.nif = nif;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -49,7 +69,7 @@ public class Notification {
         this.description = description;
     }
 
-    public Notification(int idNotification, int nif, LocalDate date, String title, String description) {
+    public Notification(int idNotification, int nif, LocalDateTime date, String title, String description) {
         this.idNotification = idNotification;
         this.nif = nif;
         this.date = date;

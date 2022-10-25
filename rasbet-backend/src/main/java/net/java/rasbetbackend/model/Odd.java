@@ -1,14 +1,38 @@
 package net.java.rasbetbackend.model;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "odd",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idOdd")
+        })
 public class Odd {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idOdd;
+    @NotNull
     private int idGame;
+    @NotBlank
     private String house;
+    @NotNull
+    @Min(1)
     private double value;
+    @NotNull
     private int type;
-    private LocalDate date;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime date;
+
+    public Odd() {
+
+    }
 
     public int getIdOdd() {
         return idOdd;
@@ -50,15 +74,15 @@ public class Odd {
         this.type = type;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
-    public Odd(int idOdd, int idGame, String house, double value, int type, LocalDate date) {
+    public Odd(int idOdd, int idGame, String house, double value, int type, LocalDateTime date) {
         this.idOdd = idOdd;
         this.idGame = idGame;
         this.house = house;

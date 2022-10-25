@@ -1,10 +1,28 @@
 package net.java.rasbetbackend.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
+@Entity
+@Table(name = "betGame",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idBet")
+        })
 public class BetGame {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idBet;
+
+    @NotNull
     private int idGame;
+
+    @NotNull
     private double odd;
+
+    public BetGame() {
+
+    }
     //private enum bet;
 
     public int getIdBet() {

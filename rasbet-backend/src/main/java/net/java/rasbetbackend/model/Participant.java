@@ -1,10 +1,26 @@
 package net.java.rasbetbackend.model;
 
-public class Participant {
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
-    private int idGame;
+@Entity
+@Table(name = "participant",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idGame")
+        })
+public class Participant {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idParticipant;
+    @NotNull
+    private int idGame;
+    @NotBlank
     private String name;
+
+    public Participant() {
+
+    }
 
     public int getIdGame() {
         return idGame;

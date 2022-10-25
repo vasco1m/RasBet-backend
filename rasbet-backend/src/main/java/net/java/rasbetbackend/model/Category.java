@@ -1,8 +1,23 @@
 package net.java.rasbetbackend.model;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+@Entity
+@Table(name = "category",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idCategory")
+        })
 public class Category {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idCategory;
+    @NotBlank
     private String name;
+
+    public Category() {
+
+    }
 
     public int getIdCategory() {
         return idCategory;
