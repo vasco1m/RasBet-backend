@@ -12,4 +12,8 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     Boolean existsByIdGame(int idGAme);
 
+    Optional<Game> findByIdCategory(int idGame);
+
+    Boolean existsByIdCategory(int idGAme);
+
 }

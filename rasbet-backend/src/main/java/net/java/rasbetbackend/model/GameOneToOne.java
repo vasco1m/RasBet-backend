@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "gameOneToOne",
@@ -16,7 +17,7 @@ public class GameOneToOne {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGame;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDate date;
+    private LocalDateTime date;
     @NotNull
     private String tpA;
     @NotNull
@@ -34,11 +35,11 @@ public class GameOneToOne {
         this.idGame = idGame;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -59,7 +60,7 @@ public class GameOneToOne {
         this.tpB = tpB;
     }
 
-    public GameOneToOne(int idGame, LocalDate date, String tpA, String tpB) {
+    public GameOneToOne(int idGame, LocalDateTime date, String tpA, String tpB) {
         this.idGame = idGame;
         this.date = date;
         this.tpA = tpA;

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "category",
+@Table(name = "game",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "idGame")
         })
