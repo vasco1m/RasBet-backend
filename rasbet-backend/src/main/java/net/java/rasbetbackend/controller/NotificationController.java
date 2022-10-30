@@ -1,6 +1,7 @@
 package net.java.rasbetbackend.controller;
 
 import net.java.rasbetbackend.model.Notification;
+import net.java.rasbetbackend.model.User;
 import net.java.rasbetbackend.payload.request.NotificationRequest;
 import net.java.rasbetbackend.payload.response.MessageResponse;
 import net.java.rasbetbackend.repository.NotificationRepository;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/noti")
+@RequestMapping("/notifications")
 public class NotificationController {
     @Autowired
     NotificationRepository notificationRepository;
@@ -24,32 +25,32 @@ public class NotificationController {
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> createNotification(@Valid @RequestBody NotificationRequest notificationRequest){
-        if (notificationRepository.existsByIdNotification(notificationRequest.getId())){
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: ID Notification Incorrect!"));
-            //ver se isto pode existir
-        }
-        //if (!userRepository.existsByNif(notificationRequest.getNif())){return ResponseEntity.badRequest().body(new MessageResponse("Error: NIF Notification Incorrect!"));}
+        boolean all = false;
+        if(notificationRequest.getNif() == 999999999) all = true; //notification will be sent to everyone
+        else if (!userRepository.existsByNif(notificationRequest.getNif())){return ResponseEntity.badRequest().body(new MessageResponse("Error: NIF Notification Incorrect!"));}
         try{
-            Notification notification = new Notification(
-                    notificationRequest.getId(),
-                    notificationRequest.getNif(),
-                    notificationRequest.getDate(),//LocalDateTime.now()
-                    notificationRequest.getTitle(),
-                    notificationRequest.getDescription()
-            );
-
-
-            notificationRepository.save(notification);
-
-            //Como notificar o cliente da notificaçao ????
-
+            if(all){
+                for (User u : userRepository.findAll()) {
+                    Notification notification = new Notification(
+                            (int) u.getNif(),
+                            notificationRequest.getTitle(),
+                            notificationRequest.getDescription()
+                    );
+                    notificationRepository.save(notification);
+                }
+            }
+            else {
+                Notification notification = new Notification(
+                        notificationRequest.getNif(),
+                        notificationRequest.getTitle(),
+                        notificationRequest.getDescription()
+                );
+                notificationRepository.save(notification);
+            }
         } catch(Exception e){
-
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
-
-        return ResponseEntity.ok(new MessageResponse("Notification sent successfully!"));
+        return ResponseEntity.ok(new MessageResponse("Notification(s) sent successfully!"));
     }
 
 
