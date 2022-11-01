@@ -19,6 +19,8 @@ public class BetGame {
 
     @NotNull
     private double odd;
+    @NotNull
+    private int result;
 
     public BetGame() {
 
@@ -36,9 +38,6 @@ public class BetGame {
     public int getIdGame() {
         return idGame;
     }
-    //public int getBet() {
-    //    return bet;
-    //}
 
     public void setIdGame(int idGame) {
         this.idGame = idGame;
@@ -52,10 +51,18 @@ public class BetGame {
         this.odd = odd;
     }
 
-    public BetGame(int idBet, int idGame, double odd) {
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public BetGame(int idBet, int idGame, double odd,int result) {
         this.idBet = idBet;
         this.idGame = idGame;
         this.odd = odd;
-        //this.bet=bet;
+        this.result=result;
     }
 }
