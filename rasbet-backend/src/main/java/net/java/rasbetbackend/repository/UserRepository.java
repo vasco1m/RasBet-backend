@@ -11,6 +11,8 @@ import net.java.rasbetbackend.model.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
 
+    Optional<User> findByNif(int nif);
+
     Boolean existsByUsername(String username);
 
     Boolean existsByEmail(String email);

@@ -1,18 +1,15 @@
 package net.java.rasbetbackend.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "sale",
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = "idSale")
+        })
 public class Sale {
-
-    public enum Sale_State{
-        Concluded,
-        Expired,
-        Available
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -22,7 +19,7 @@ public class Sale {
     @NotNull
     private LocalDateTime validationTime;
     @NotNull
-    private Sale_State state;
+    private SaleState state;
 
     public int getIdSale() {
         return idSale;
@@ -48,11 +45,11 @@ public class Sale {
         this.validationTime = validationTime;
     }
 
-    public Sale_State getResult() {
+    public SaleState getResult() {
         return this.state;
     }
 
-    public void setResult(Sale_State state) {
+    public void setResult(SaleState state) {
         this.state = state;
     }
 
@@ -60,7 +57,7 @@ public class Sale {
 
     }
 
-    public Sale(int idGame,LocalDateTime validationTime,Sale_State state){
+    public Sale(int idGame,LocalDateTime validationTime,SaleState state){
         this.idGame = idGame;
         this.validationTime=validationTime;
         this.state=state;

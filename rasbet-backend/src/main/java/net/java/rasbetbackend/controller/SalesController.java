@@ -2,6 +2,7 @@ package net.java.rasbetbackend.controller;
 
 import net.java.rasbetbackend.model.Game;
 import net.java.rasbetbackend.model.Sale;
+import net.java.rasbetbackend.model.SaleState;
 import net.java.rasbetbackend.payload.request.SalesRequest;
 import net.java.rasbetbackend.payload.response.MessageResponse;
 import net.java.rasbetbackend.repository.GameRepository;
@@ -42,7 +43,7 @@ public class SalesController {
                     Sale sale = new Sale(
                             game.getIdGame(),
                             salesRequest.getValidationTime(),
-                            Sale.Sale_State.Available
+                            SaleState.Available
                     );
                     saleRepository.save(sale);
                 }
@@ -51,7 +52,7 @@ public class SalesController {
                 Sale sale = new Sale(
                         salesRequest.getIdGame(),
                         salesRequest.getValidationTime(),
-                        Sale.Sale_State.Available
+                        SaleState.Available
                 );
                 saleRepository.save(sale);
             }
