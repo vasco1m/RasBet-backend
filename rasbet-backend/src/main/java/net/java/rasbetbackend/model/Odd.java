@@ -82,8 +82,7 @@ public class Odd {
         this.date = date;
     }
 
-    public Odd(int idOdd, int idGame, String house, double value, int type, LocalDateTime date) {
-        this.idOdd = idOdd;
+    public Odd(int idGame, String house, double value, int type, LocalDateTime date) {
         this.idGame = idGame;
         this.house = house;
         this.value = value;
