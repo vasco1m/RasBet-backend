@@ -22,8 +22,6 @@ public class BetRequest {
 
     private int idParticipant;
 
-    @NotNull
-    private BetState state;
 
     @NotNull
     private double value;
@@ -51,15 +49,6 @@ public class BetRequest {
 
     public void setIdParticipant(int idParticipant) {
         this.idParticipant = idParticipant;
-    }
-
-
-    public BetState getSate() {
-        return state;
-    }
-
-    public void setState(BetState state) {
-        this.state = state;
     }
 
 

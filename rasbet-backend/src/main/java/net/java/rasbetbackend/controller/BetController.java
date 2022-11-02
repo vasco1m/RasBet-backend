@@ -26,7 +26,8 @@ public class BetController {
     @Autowired
     BetRepository betRepository;
 
-
+    @Autowired
+    WalletRepository walletRepository;
 
     @GetMapping(value = "/userbets", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_BETTER')")
@@ -60,9 +61,23 @@ public class BetController {
                     .body(new MessageResponse("Error: invalid bet!"));
         }
 
+        Optional<Wallet> walletOptional = walletRepository.findAllByNif((int) user.getNif());
+        Wallet wallet = walletOptional.get();
+
+        if(wallet.getBudget() - betRequest.getValue() < 0) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: invalid bet: nobudget!"));
+        }
+
+        wallet.setBudget(wallet.getBudget()-betRequest.getValue());
+
+        walletRepository.saveAndFlush(wallet);
+
+
         Bet bet = new Bet((int) user.getNif(),
                 betRequest.getValue(),
-                betRequest.getSate(),
+                BetState.Done,
                 betRequest.getOdd(),
                 betRequest.getIdGame());
 
