@@ -27,6 +27,29 @@ public class BetController {
     BetRepository betRepository;
 
 
+
+    @GetMapping(value = "/userbets", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_BETTER')")
+    public ResponseEntity<?> getUserBets(@AuthenticationPrincipal User user) {
+        long nif = user.getNif();
+        List<Optional<Bet>> betList = betRepository.findAllByNif((int) user.getNif());
+        List<JSONObject> objects = new ArrayList<>();
+        for (Optional<Bet> betOptional : betList) {
+            if(betOptional.isPresent()) {
+                Bet bet = betOptional.get();
+                JSONObject obj = new JSONObject();
+                obj.put("Value", bet.getValue());
+                obj.put("date", bet.getDateTime());
+                obj.put("odd", bet.getOdd());
+                obj.put("state", bet.getState());
+                objects.add(obj);
+            }
+
+        }
+        return ResponseEntity.ok(new MessageResponse(objects.toString()));
+    }
+
+
     @GetMapping(value = "/bet", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_BETTER') or hasRole('ROLE_SPECIALIST') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<?> registerBet(@RequestBody BetRequest betRequest, @AuthenticationPrincipal User user) {

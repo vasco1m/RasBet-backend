@@ -34,6 +34,7 @@ public class Bet {
     private int idGame;
 
 
+    private int idParticipant;
 
     public Bet() {
 
@@ -93,6 +94,14 @@ public class Bet {
 
     public void setIdGame(int idGame) {
         this.idGame = idGame;
+    }
+
+    public int getIdParticipant() {
+        return this.idParticipant;
+    }
+
+    public void setIdParticipant(int idParticipant) {
+        this.idParticipant = idParticipant;
     }
 
     public Bet(int nif, double value, BetState state, double odd, int idGame) {
