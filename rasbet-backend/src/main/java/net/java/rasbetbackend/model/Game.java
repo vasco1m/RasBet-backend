@@ -13,9 +13,11 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idGame;
     @NotNull
-    private boolean type;
+    private String apiID;
     @NotNull
-    private int idCategory;
+    private boolean type;//true -> 1xM  false -> 1x1
+    @NotNull
+    private int idCategory;//Football -> 0
 
     public Game() {
 
@@ -45,8 +47,14 @@ public class Game {
         this.idCategory = idCategory;
     }
 
-    public Game(int idGame, boolean type, int idCategory) {
-        this.idGame = idGame;
+    public Game(boolean type, int idCategory) {
+        this.apiID = "";
+        this.type = type;
+        this.idCategory = idCategory;
+    }
+
+    public Game(String idApi, boolean type, int idCategory) {
+        this.apiID = idApi;
         this.type = type;
         this.idCategory = idCategory;
     }
