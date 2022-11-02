@@ -66,7 +66,7 @@ public class GamesController {
                     if(game.isType() == true){
                         Optional<GameOneToMany> g = gameOneToManyRepository.findByIdGame(game.getIdGame());
                         obj.put("date", g.get().getDateTime());
-                        obj.put("draw", g.get().isDraw());
+                        obj.put("draw", game.isDraw());
                         List<Participant> participants = participantRepository.findAll();
                         Map<Integer,String> p = new HashMap<>();
                         for (Participant participant : participants) {
@@ -117,12 +117,29 @@ public class GamesController {
                 scanner.close();
                 JSONParser parse = new JSONParser();
                 JSONArray dataObject = (JSONArray) parse.parse(String.valueOf(informationString));
+                if (!categoryRepository.existsByName("Football")){categoryRepository.save(new Category("Football"));}
                 for (int i = 0; i<dataObject.size(); i++){
                     JSONObject game = (JSONObject) dataObject.get(i);
-                    Game g = new Game((String) game.get("id") ,false, 0);
-                    gameRepository.save(g);
-                    GameOneToOne gotO = new GameOneToOne(g.getIdGame(),(String) game.get("homeTeam"),(String) game.get("awayTeam"));
-                    gameOneToOneRepository.save(gotO);
+                    if (!gameRepository.existsByApiID((String) game.get("id"))){
+                        Game g = new Game((String) game.get("id") ,false, 0);
+                        gameRepository.save(g);
+                        GameOneToOne gotO = new GameOneToOne(g.getIdGame(),(String) game.get("homeTeam"),(String) game.get("awayTeam"));
+                        gameOneToOneRepository.save(gotO);
+                    }
+                    Optional<Game> game_existing = gameRepository.findByApiID((String) game.get("id"));
+                    if (game_existing.isPresent() && ( ((String) game.get("completed")) == "true" )){
+                        Game game_exists = game_existing.get();
+                        //update existing game
+                        String result = (String) game.get("scores");
+                        String[] goals = result.split("x",2);
+                        Integer[] golinhos = new Integer[2];
+                        golinhos[0] = Integer.parseInt(goals[0]);
+                        golinhos[1] = Integer.parseInt(goals[1]);
+                        if(golinhos[0] > golinhos[1] ){game_exists.setDraw(false); game_exists.setResult(0);}
+                        else if(golinhos[0] == golinhos[1]){game_exists.setDraw(true); game_exists.setResult(-1);}
+                        else {game_exists.setDraw(false); game_exists.setResult(1);}
+                        gameRepository.saveAndFlush(game_exists);
+                    }
                 }
             }
         } catch (Exception e) {

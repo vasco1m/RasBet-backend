@@ -21,8 +21,6 @@ public class GameOneToMany {
     private LocalDateTime dateTime;
     @NotBlank
     private String name;
-    @NotNull
-    private boolean draw;
 
     public GameOneToMany() {
 
@@ -52,18 +50,9 @@ public class GameOneToMany {
         this.name = name;
     }
 
-    public boolean isDraw() {
-        return draw;
-    }
-
-    public void setDraw(boolean draw) {
-        this.draw = draw;
-    }
-
-    public GameOneToMany(int idGame, LocalDateTime dateTime, String name, boolean draw) {
+    public GameOneToMany(int idGame, LocalDateTime dateTime, String name) {
         this.idGame = idGame;
         this.dateTime = dateTime;
         this.name = name;
-        this.draw = draw;
     }
 }
