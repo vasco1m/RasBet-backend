@@ -9,4 +9,5 @@ public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
     Optional<Wallet> findAllByNif(int nif);
 
+    Boolean existsByNif(int nif);
 }
