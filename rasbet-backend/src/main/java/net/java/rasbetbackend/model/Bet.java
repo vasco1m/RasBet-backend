@@ -14,13 +14,6 @@ import java.time.LocalDateTime;
         })
 public class Bet {
 
-
-    public enum Bet_State{
-        Concluded,
-        Done,
-        Waiting_Payment,
-        Canceled;
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idBet;
@@ -32,7 +25,15 @@ public class Bet {
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateTime;
     @NotNull
-    private Bet_State state;
+    private BetState state;
+
+    @NotNull
+    private double odd;
+
+    @NotNull
+    private int idGame;
+
+
 
     public Bet() {
 
@@ -70,19 +71,36 @@ public class Bet {
         this.dateTime = dateTime;
     }
 
-    public Bet_State getState() {
+    public BetState getState() {
         return state;
     }
 
-    public void setState(Bet_State state) {
+    public void setState(BetState state) {
         this.state = state;
     }
 
-    public Bet(int idBet, int nif, double value, LocalDateTime dateTime,Bet_State state) {
-        this.idBet = idBet;
+    public double getOdd() {
+        return odd;
+    }
+
+    public void setOdd(double odd) {
+        this.odd = odd;
+    }
+
+    public int getIdGame() {
+        return idGame;
+    }
+
+    public void setIdGame(int idGame) {
+        this.idGame = idGame;
+    }
+
+    public Bet(int nif, double value, BetState state, double odd, int idGame) {
         this.nif = nif;
         this.value = value;
-        this.dateTime = dateTime;
+        this.dateTime = LocalDateTime.now();
         this.state = state;
+        this.odd = odd;
+        this.idGame = idGame;
     }
 }

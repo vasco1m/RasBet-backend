@@ -1,6 +1,7 @@
 package net.java.rasbetbackend.controller;
 
 import net.java.rasbetbackend.model.Bet;
+import net.java.rasbetbackend.model.BetState;
 import net.java.rasbetbackend.payload.response.MessageResponse;
 import net.java.rasbetbackend.repository.BetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class BetController {
             Optional<Bet> bet = betRepository.findByIdBet(idBet);
             if(bet.isPresent()){
                 Bet be=bet.get();
-                be.setState(Bet.Bet_State.valueOf(state));
+                be.setState(BetState.valueOf(state));
                 betRepository.save(be);
             }
         } catch (Exception e){
