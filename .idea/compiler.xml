@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="rasbet-backend" target="17" />
+      <module name="rasbet-backend" target="16" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">

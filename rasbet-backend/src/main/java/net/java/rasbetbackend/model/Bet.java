@@ -13,15 +13,27 @@ import java.time.LocalDateTime;
                 @UniqueConstraint(columnNames = "idBet")
         })
 public class Bet {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idBet;
+
     @NotNull
     private int nif;
     @NotNull
     private double value;
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateTime;
+    @NotNull
+    private BetState state;
+
+    @NotNull
+    private double odd;
+
+    @NotNull
+    private int idGame;
+
+
 
     public Bet() {
 
@@ -59,10 +71,36 @@ public class Bet {
         this.dateTime = dateTime;
     }
 
-    public Bet(int idBet, int nif, double value, LocalDateTime dateTime) {
-        this.idBet = idBet;
+    public BetState getState() {
+        return state;
+    }
+
+    public void setState(BetState state) {
+        this.state = state;
+    }
+
+    public double getOdd() {
+        return odd;
+    }
+
+    public void setOdd(double odd) {
+        this.odd = odd;
+    }
+
+    public int getIdGame() {
+        return idGame;
+    }
+
+    public void setIdGame(int idGame) {
+        this.idGame = idGame;
+    }
+
+    public Bet(int nif, double value, BetState state, double odd, int idGame) {
         this.nif = nif;
         this.value = value;
-        this.dateTime = dateTime;
+        this.dateTime = LocalDateTime.now();
+        this.state = state;
+        this.odd = odd;
+        this.idGame = idGame;
     }
 }
