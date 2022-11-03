@@ -31,9 +31,6 @@ public class Game {
     @NotNull
     private boolean draw;
 
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dateTime;
-
     public Game() {
 
     }

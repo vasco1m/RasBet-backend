@@ -6,12 +6,18 @@ import net.java.rasbetbackend.payload.request.NotificationRequest;
 import net.java.rasbetbackend.payload.response.MessageResponse;
 import net.java.rasbetbackend.repository.NotificationRepository;
 import net.java.rasbetbackend.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController

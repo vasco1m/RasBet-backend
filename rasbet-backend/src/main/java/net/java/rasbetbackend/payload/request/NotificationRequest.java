@@ -1,9 +1,7 @@
 package net.java.rasbetbackend.payload.request;
 
-import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 public class NotificationRequest {
     @NotBlank

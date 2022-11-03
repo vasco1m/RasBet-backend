@@ -7,16 +7,12 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.HttpURLConnection;
@@ -76,10 +72,10 @@ public class GamesController {
                     obj.put("id", game.getIdGame());
                     obj.put("idCategory", game.getIdCategory());
                     obj.put("date", game.getDateTime());
+                    obj.put("draw", game.isDraw());
                     if(game.isType() == true){
                         Optional<GameOneToMany> g = gameOneToManyRepository.findByIdGame(game.getIdGame());
                         obj.put("name", g.get().getName());
-                        obj.put("draw", g.get().isDraw());
                         List<Participant> participants = participantRepository.findAll();
                         Map<Integer,String> p = new HashMap<>();
                         for (Participant participant : participants) {
@@ -114,14 +110,12 @@ public class GamesController {
 
     @Scheduled(fixedRate = 100000)
     public ResponseEntity<?> updateGames(){
-        System.out.println("updating game");
         try {
             URL url = new URL("http://ucras.di.uminho.pt/v1/games");
             HttpURLConnection connection=(HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             connection.connect();
             if (connection.getResponseCode() != 200){
-                System.out.println("Error: Error Connecting to API!");
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: Error Connecting to API!"));
             } else{
                 StringBuilder informationString = new StringBuilder();
@@ -162,7 +156,6 @@ public class GamesController {
             e.printStackTrace();
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
         }
-        System.out.println("game updated");
         return ResponseEntity.badRequest().body(new MessageResponse("API: Games Updated !"));
     }
 }

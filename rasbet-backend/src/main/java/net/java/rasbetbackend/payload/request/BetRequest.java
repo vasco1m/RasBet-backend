@@ -1,13 +1,10 @@
 package net.java.rasbetbackend.payload.request;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import net.java.rasbetbackend.model.BetState;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 
 
 @Service

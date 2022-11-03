@@ -1,26 +1,17 @@
 package net.java.rasbetbackend.controller;
 
-import net.java.rasbetbackend.model.Bet;
-import net.java.rasbetbackend.model.BetState;
-import net.java.rasbetbackend.model.User;
 import net.java.rasbetbackend.model.Wallet;
-import net.java.rasbetbackend.payload.request.BetRequest;
 import net.java.rasbetbackend.payload.request.WalletRequest;
 import net.java.rasbetbackend.payload.response.MessageResponse;
-import net.java.rasbetbackend.repository.BetRepository;
 import net.java.rasbetbackend.repository.UserRepository;
 import net.java.rasbetbackend.repository.WalletRepository;
-import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)

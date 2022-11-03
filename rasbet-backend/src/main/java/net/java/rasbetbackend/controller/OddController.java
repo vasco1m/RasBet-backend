@@ -1,6 +1,6 @@
 package net.java.rasbetbackend.controller;
 
-        import net.java.rasbetbackend.model.Odd;
+import net.java.rasbetbackend.model.Odd;
         import net.java.rasbetbackend.payload.request.OddRequest;
         import net.java.rasbetbackend.payload.response.MessageResponse;
         import net.java.rasbetbackend.repository.GameRepository;

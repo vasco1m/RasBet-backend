@@ -1,10 +1,9 @@
 package net.java.rasbetbackend.controller;
 
-import net.java.rasbetbackend.exception.AgeException;
 import net.java.rasbetbackend.model.*;
 import net.java.rasbetbackend.payload.request.BetRequest;
+import net.java.rasbetbackend.payload.request.ChangeBetStateRequest;
 import net.java.rasbetbackend.payload.request.IntRequest;
-import net.java.rasbetbackend.payload.request.SignupRequest;
 import net.java.rasbetbackend.payload.response.MessageResponse;
 import net.java.rasbetbackend.repository.*;
 import org.json.simple.JSONObject;
@@ -13,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
