@@ -96,7 +96,6 @@ public class AuthController {
                     signUpRequest.getBornDate());
             Set<String> strRoles = signUpRequest.getRole();
             Set<Role> roles = new HashSet<>();
-
             if (strRoles == null) {
                 Role userRole = roleRepository.findByName(UserType.ROLE_BETTER)
                         .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -123,7 +122,6 @@ public class AuthController {
                     }
                 });
             }
-
             user.setRoles(roles);
             userRepository.save(user);
         }
