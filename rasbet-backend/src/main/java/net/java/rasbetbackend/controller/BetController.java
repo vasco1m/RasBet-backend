@@ -2,6 +2,7 @@ package net.java.rasbetbackend.controller;
 
 import net.java.rasbetbackend.model.Bet;
 import net.java.rasbetbackend.model.BetState;
+import net.java.rasbetbackend.payload.request.ChangeBetStateRequest;
 import net.java.rasbetbackend.payload.response.MessageResponse;
 import net.java.rasbetbackend.repository.BetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,14 @@ public class BetController {
 
     @PostMapping("/change_state")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> changeState(String state, int idBet){
-        if(!betRepository.existsByIdBet(idBet)){ return ResponseEntity.badRequest().body(new MessageResponse("Error: Bet Non-Existing!")); }
+    public ResponseEntity<?> changeState(ChangeBetStateRequest cbsr){
+        if(!betRepository.existsByIdBet(cbsr.getIdBet())){ return ResponseEntity.badRequest().body(new MessageResponse("Error: Bet Non-Existing!")); }
         try{
-            Optional<Bet> bet = betRepository.findByIdBet(idBet);
+            Optional<Bet> bet = betRepository.findByIdBet(cbsr.getIdBet());
             if(bet.isPresent()){
                 Bet be=bet.get();
-                be.setState(BetState.valueOf(state));
-                betRepository.save(be);
+                be.setState(BetState.valueOf(cbsr.getState()));
+                betRepository.saveAndFlush(be);
             }
         } catch (Exception e){
             return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
