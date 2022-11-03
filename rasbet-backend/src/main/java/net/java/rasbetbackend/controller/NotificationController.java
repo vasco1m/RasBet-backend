@@ -21,6 +21,20 @@ public class NotificationController {
     NotificationRepository notificationRepository;
     @Autowired
     UserRepository userRepository;
+    
+    @GetMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_BETTER')")
+    public ResponseEntity<?> getNotifications(Authentication authentication) {
+        List<JSONObject> objects = new ArrayList<>();
+        for (Optional<Notification> n : notificationRepository.findAllByNif((int) userRepository.findByUsername(authentication.getName()).get().getNif())) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("title", n.get().getTitle());
+            jsonObject.put("date", n.get().getDate());
+            jsonObject.put("description", n.get().getDescription());
+            objects.add(jsonObject);
+        }
+        return ResponseEntity.ok(objects);
+    }
 
     @PostMapping("/create")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
