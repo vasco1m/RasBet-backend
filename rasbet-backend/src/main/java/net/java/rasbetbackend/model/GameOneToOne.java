@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
         })
 public class GameOneToOne {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGame;
     @NotNull
     private String tpA;

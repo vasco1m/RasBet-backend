@@ -24,6 +24,12 @@ public class Game {
     private boolean type;//true -> 1xM  false -> 1x1
     @NotNull
     private int idCategory;//Football -> 0
+    @NotNull
+    private int result;
+    //1x1 : -1-> empate  0 -> hometeam   1-> awayteam
+    //1xM :  pela ordem
+    @NotNull
+    private boolean draw;
 
     public Game() {
 
@@ -75,16 +81,27 @@ public class Game {
         this.idCategory = idCategory;
     }
 
-    public Game(String idApi, boolean type, int idCategory) {
-        this.apiID = idApi;
-        this.type = type;
-        this.idCategory = idCategory;
+    public int getResult() {
+        return result;
     }
 
-    public Game(String apiID, LocalDateTime dateTime, boolean type, int idCategory) {
-        this.apiID = apiID;
-        this.dateTime = dateTime;
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public boolean isDraw() {
+        return draw;
+    }
+
+    public void setDraw(boolean draw) {
+        this.draw = draw;
+    }
+
+    public Game(String idApi, boolean type, LocalDateTime dateTime, int idCategory) {
+        this.apiID = idApi;
         this.type = type;
+        this.dateTime = dateTime;
         this.idCategory = idCategory;
+        this.draw = false;
     }
 }
