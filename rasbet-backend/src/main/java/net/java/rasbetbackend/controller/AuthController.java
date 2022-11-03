@@ -67,7 +67,7 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getNif(),
+                (long) userDetails.getNif(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
@@ -132,7 +132,7 @@ public class AuthController {
                         .body(new MessageResponse("Error: You should be at least 18 years old."));
             else return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Unknown error."));
+                    .body(new MessageResponse(e.getMessage()));
         }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
