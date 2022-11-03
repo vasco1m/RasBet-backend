@@ -17,8 +17,6 @@ public class GameOneToMany {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGame;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dateTime;
     @NotBlank
     private String name;
     @NotNull
@@ -34,14 +32,6 @@ public class GameOneToMany {
 
     public void setIdGame(int idGame) {
         this.idGame = idGame;
-    }
-
-    public LocalDateTime getDateTime() {
-        return dateTime;
-    }
-
-    public void setDateTime(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
     }
 
     public String getName() {
@@ -60,9 +50,8 @@ public class GameOneToMany {
         this.draw = draw;
     }
 
-    public GameOneToMany(int idGame, LocalDateTime dateTime, String name, boolean draw) {
+    public GameOneToMany(int idGame, String name, boolean draw) {
         this.idGame = idGame;
-        this.dateTime = dateTime;
         this.name = name;
         this.draw = draw;
     }

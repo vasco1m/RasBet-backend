@@ -59,9 +59,9 @@ public class GamesController {
                     JSONObject obj = new JSONObject();
                     obj.put("id", game.getIdGame());
                     obj.put("idCategory", game.getIdCategory());
+                    obj.put("date", game.getDateTime());
                     if(game.isType() == true){
                         Optional<GameOneToMany> g = gameOneToManyRepository.findByIdGame(game.getIdGame());
-                        obj.put("date", g.get().getDateTime());
                         obj.put("draw", g.get().isDraw());
                         List<Participant> participants = participantRepository.findAll();
                         Map<Integer,String> p = new HashMap<>();

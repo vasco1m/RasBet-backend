@@ -1,7 +1,10 @@
 package net.java.rasbetbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "game",
@@ -16,6 +19,9 @@ public class Game {
     private boolean type;
     @NotNull
     private int idCategory;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dateTime;
 
     public Game() {
 
@@ -45,9 +51,18 @@ public class Game {
         this.idCategory = idCategory;
     }
 
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
+    }
+
     public Game(int idGame, boolean type, int idCategory) {
         this.idGame = idGame;
         this.type = type;
         this.idCategory = idCategory;
+        this.dateTime = LocalDateTime.now();
     }
 }
