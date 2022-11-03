@@ -14,10 +14,7 @@ import java.time.LocalDateTime;
         })
 public class GameOneToOne {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGame;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDateTime date;
     @NotNull
     private String tpA;
     @NotNull
@@ -35,15 +32,6 @@ public class GameOneToOne {
         this.idGame = idGame;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-
     public String getTpA() {
         return tpA;
     }
@@ -60,9 +48,8 @@ public class GameOneToOne {
         this.tpB = tpB;
     }
 
-    public GameOneToOne(int idGame, LocalDateTime date, String tpA, String tpB) {
+    public GameOneToOne(int idGame, String tpA, String tpB) {
         this.idGame = idGame;
-        this.date = date;
         this.tpA = tpA;
         this.tpB = tpB;
     }

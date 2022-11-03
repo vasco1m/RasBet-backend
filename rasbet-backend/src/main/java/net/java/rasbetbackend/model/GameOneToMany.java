@@ -15,12 +15,9 @@ import java.time.LocalDateTime;
         })
 public class GameOneToMany {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idGame;
     @NotBlank
     private String name;
-    @NotNull
-    private boolean draw;
 
     public GameOneToMany() {
 
@@ -42,17 +39,9 @@ public class GameOneToMany {
         this.name = name;
     }
 
-    public boolean isDraw() {
-        return draw;
-    }
-
-    public void setDraw(boolean draw) {
-        this.draw = draw;
-    }
 
     public GameOneToMany(int idGame, String name, boolean draw) {
         this.idGame = idGame;
         this.name = name;
-        this.draw = draw;
     }
 }

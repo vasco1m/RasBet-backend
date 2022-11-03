@@ -16,9 +16,20 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int idGame;
     @NotNull
-    private boolean type;
+    private String apiID;
+
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dateTime;
     @NotNull
-    private int idCategory;
+    private boolean type;//true -> 1xM  false -> 1x1
+    @NotNull
+    private int idCategory;//Football -> 0
+    @NotNull
+    private int result;
+    //1x1 : -1-> empate  0 -> hometeam   1-> awayteam
+    //1xM :  pela ordem
+    @NotNull
+    private boolean draw;
 
     @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dateTime;
@@ -51,6 +62,14 @@ public class Game {
         this.idCategory = idCategory;
     }
 
+    public String getApiID() {
+        return apiID;
+    }
+
+    public void setApiID(String apiID) {
+        this.apiID = apiID;
+    }
+
     public LocalDateTime getDateTime() {
         return dateTime;
     }
@@ -59,9 +78,33 @@ public class Game {
         this.dateTime = dateTime;
     }
 
-    public Game(int idGame, boolean type, int idCategory) {
+    public Game(boolean type, int idCategory) {
+        this.apiID = "";
+        this.type = type;
+        this.idCategory = idCategory;
+    }
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
+
+    public boolean isDraw() {
+        return draw;
+    }
+
+    public void setDraw(boolean draw) {
+        this.draw = draw;
+    }
+
+    public Game(String idApi, boolean type, LocalDateTime dateTime, int idCategory) {
+        this.apiID = idApi;
         this.idGame = idGame;
         this.type = type;
+        this.dateTime = dateTime;
         this.idCategory = idCategory;
         this.dateTime = LocalDateTime.now();
     }
