@@ -4,14 +4,15 @@ import net.java.rasbetbackend.controller.GamesController;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class APITimer implements Runnable {
-    @Autowired
-    GamesController update;
+    private GamesController gamesController = new GamesController();
 
     @Override
     public void run() {
         while (true){
             try {
-                update.updateGames();
+                System.out.println("Will update the games now!");
+                gamesController.updateGames();
+                System.out.println("Games updated!");
                 Thread.sleep(1000*60*5);
             } catch (InterruptedException e) {
                 System.out.println("Deu erro update API.");

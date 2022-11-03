@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -63,9 +64,9 @@ public class GamesController {
                     JSONObject obj = new JSONObject();
                     obj.put("id", game.getIdGame());
                     obj.put("idCategory", game.getIdCategory());
+                    obj.put("date", game.getDateTime());
                     if(game.isType() == true){
                         Optional<GameOneToMany> g = gameOneToManyRepository.findByIdGame(game.getIdGame());
-                        obj.put("date", g.get().getDateTime());
                         obj.put("draw", g.get().isDraw());
                         List<Participant> participants = participantRepository.findAll();
                         Map<Integer,String> p = new HashMap<>();
@@ -78,7 +79,6 @@ public class GamesController {
                     }
                     else{
                         Optional<GameOneToOne> g = gameOneToOneRepository.findByIdGame(game.getIdGame());
-                        obj.put("date", g.get().getDate());
                         obj.put("home",g.get().getTpA());
                         obj.put("away",g.get().getTpB());
                     }
@@ -107,6 +107,7 @@ public class GamesController {
             connection.setRequestMethod("GET");
             connection.connect();
             if (connection.getResponseCode() != 200){
+                System.out.println("Error: Error Connecting to API!");
                 return ResponseEntity.badRequest().body(new MessageResponse("Error: Error Connecting to API!"));
             } else{
                 StringBuilder informationString = new StringBuilder();
@@ -117,12 +118,18 @@ public class GamesController {
                 scanner.close();
                 JSONParser parse = new JSONParser();
                 JSONArray dataObject = (JSONArray) parse.parse(String.valueOf(informationString));
-                for (int i = 0; i<dataObject.size(); i++){
-                    JSONObject game = (JSONObject) dataObject.get(i);
-                    Game g = new Game((String) game.get("id") ,false, 0);
-                    gameRepository.save(g);
-                    GameOneToOne gotO = new GameOneToOne(g.getIdGame(),(String) game.get("homeTeam"),(String) game.get("awayTeam"));
-                    gameOneToOneRepository.save(gotO);
+                for (Object obj : dataObject){
+                    JSONObject game = (JSONObject) obj;
+                    System.out.println(game);
+                    if(gameRepository.existsByApiID((String) game.get("id"))){
+                        //TODO MAKE CHANGES WHEN UPDATED
+                    }
+                    else{
+                        Game g = new Game((String) game.get("id"), (LocalDateTime) game.get("commenceTime"),false, 0);
+                        gameRepository.save(g);
+                        GameOneToOne gotO = new GameOneToOne(g.getIdGame(),(String) game.get("homeTeam"),(String) game.get("awayTeam"));
+                        gameOneToOneRepository.save(gotO);
+                    }
                 }
             }
         } catch (Exception e) {
