@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface WalletRepository extends JpaRepository<Wallet, Long> {
 
-    Optional<Wallet> findAllByNif(int nif);
+    Optional<Wallet> findByNif(int nif);
 
     Boolean existsByNif(int nif);
 }

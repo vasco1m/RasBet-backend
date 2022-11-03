@@ -3,6 +3,7 @@ package net.java.rasbetbackend.repository;
 import net.java.rasbetbackend.model.Bet;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,4 +22,9 @@ public interface BetRepository extends JpaRepository<Bet, Long> {
     Boolean existsByNif(int nif);
 
     Boolean existsByNifAndIdGame(int nif, int idGame);
+
+    Boolean existsByNifAndIdBet(int nif, int idBet);
+
+    @Transactional
+    void deleteByIdBet(int idBet);
 }

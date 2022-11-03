@@ -20,7 +20,8 @@ public class BetRequest {
     @NotBlank
     private double odd;
 
-    private int idParticipant;
+    @NotNull
+    private int type;
 
 
     @NotNull
@@ -43,14 +44,13 @@ public class BetRequest {
         this.odd = odd;
     }
 
-    public int getIdParticipant() {
-        return idParticipant;
+    public int getType() {
+        return type;
     }
 
-    public void setIdParticipant(int idParticipant) {
-        this.idParticipant = idParticipant;
+    public void setType(int type) {
+        this.type = type;
     }
-
 
     public double getValue() {
         return value;

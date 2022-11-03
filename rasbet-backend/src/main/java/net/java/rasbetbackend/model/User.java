@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Collection;

@@ -3,7 +3,7 @@ package net.java.rasbetbackend.model;
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
-import javax.websocket.Session;
+//import javax.websocket.Session;
 
 public class Email {
     private String to;

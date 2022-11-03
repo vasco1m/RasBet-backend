@@ -33,8 +33,8 @@ public class Bet {
     @NotNull
     private int idGame;
 
-
-    private int idParticipant;
+    @NotNull
+    private int type;
 
     public Bet() {
 
@@ -96,20 +96,21 @@ public class Bet {
         this.idGame = idGame;
     }
 
-    public int getIdParticipant() {
-        return this.idParticipant;
+    public int getType() {
+        return type;
     }
 
-    public void setIdParticipant(int idParticipant) {
-        this.idParticipant = idParticipant;
+    public void setType(int type) {
+        this.type = type;
     }
 
-    public Bet(int nif, double value, BetState state, double odd, int idGame) {
+    public Bet(int nif, double value, BetState state, double odd, int idGame, int type) {
         this.nif = nif;
         this.value = value;
         this.dateTime = LocalDateTime.now();
         this.state = state;
         this.odd = odd;
         this.idGame = idGame;
+        this.type = type;
     }
 }
