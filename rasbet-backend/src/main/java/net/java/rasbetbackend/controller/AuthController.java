@@ -67,7 +67,7 @@ public class AuthController {
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(new JwtResponse(jwt,
-                userDetails.getNif(),
+                (long) userDetails.getNif(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
                 roles));
@@ -96,7 +96,6 @@ public class AuthController {
                     signUpRequest.getBornDate());
             Set<String> strRoles = signUpRequest.getRole();
             Set<Role> roles = new HashSet<>();
-
             if (strRoles == null) {
                 Role userRole = roleRepository.findByName(UserType.ROLE_BETTER)
                         .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
@@ -104,13 +103,13 @@ public class AuthController {
             } else {
                 strRoles.forEach(role -> {
                     switch (role) {
-                        case "admin":
+                        case "ROLE_ADMIN":
                             Role adminRole = roleRepository.findByName(UserType.ROLE_ADMIN)
                                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                             roles.add(adminRole);
 
                             break;
-                        case "specialist":
+                        case "ROLE_SPECIALIST":
                             Role modRole = roleRepository.findByName(UserType.ROLE_SPECIALIST)
                                     .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                             roles.add(modRole);
@@ -123,7 +122,6 @@ public class AuthController {
                     }
                 });
             }
-
             user.setRoles(roles);
             userRepository.save(user);
         }
@@ -134,7 +132,7 @@ public class AuthController {
                         .body(new MessageResponse("Error: You should be at least 18 years old."));
             else return ResponseEntity
                     .badRequest()
-                    .body(new MessageResponse("Error: Unknown error."));
+                    .body(new MessageResponse(e.getMessage()));
         }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));

@@ -79,6 +79,7 @@ public class GamesController {
                     if(game.isType() == true){
                         Optional<GameOneToMany> g = gameOneToManyRepository.findByIdGame(game.getIdGame());
                         obj.put("name", g.get().getName());
+                        obj.put("draw", g.get().isDraw());
                         List<Participant> participants = participantRepository.findAll();
                         Map<Integer,String> p = new HashMap<>();
                         for (Participant participant : participants) {

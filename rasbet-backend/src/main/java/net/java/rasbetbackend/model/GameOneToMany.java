@@ -39,6 +39,7 @@ public class GameOneToMany {
         this.name = name;
     }
 
+
     public GameOneToMany(int idGame, String name, boolean draw) {
         this.idGame = idGame;
         this.name = name;

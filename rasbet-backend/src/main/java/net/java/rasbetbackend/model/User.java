@@ -2,11 +2,15 @@ package net.java.rasbetbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import net.java.rasbetbackend.exception.AgeException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,10 +20,10 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class User {
+public class User implements UserDetails {
 
     @Id
-    private int nif;
+    private long nif;
     @NotBlank
     @Size(max = 20)
     private String username;
@@ -55,12 +59,32 @@ public class User {
         return nif;
     }
 
-    public void setNif(int nif) {
+    public void setNif(long nif) {
         this.nif = nif;
     }
 
     public String getUsername() {
         return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return false;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return false;
     }
 
     public void setUsername(String username) {
@@ -81,6 +105,11 @@ public class User {
 
     public void setBornDate(LocalDate bornDate) {
         this.bornDate = bornDate;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;
     }
 
     public String getPassword() {

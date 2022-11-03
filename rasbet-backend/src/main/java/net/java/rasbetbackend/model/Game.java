@@ -31,6 +31,9 @@ public class Game {
     @NotNull
     private boolean draw;
 
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dateTime;
+
     public Game() {
 
     }
@@ -99,9 +102,10 @@ public class Game {
 
     public Game(String idApi, boolean type, LocalDateTime dateTime, int idCategory) {
         this.apiID = idApi;
+        this.idGame = idGame;
         this.type = type;
         this.dateTime = dateTime;
         this.idCategory = idCategory;
-        this.draw = false;
+        this.dateTime = LocalDateTime.now();
     }
 }
