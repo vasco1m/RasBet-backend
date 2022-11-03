@@ -37,6 +37,23 @@ public class BetController {
 
     @Autowired
     GameRepository gameRepository;
+    
+    @PostMapping("/change_state")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> changeState(@Valid @RequestBody ChangeBetStateRequest cbsr){
+        if(!betRepository.existsByIdBet(cbsr.getIdBet())){ return ResponseEntity.badRequest().body(new MessageResponse("Error: Bet Non-Existing!")); }
+        try{
+            Optional<Bet> bet = betRepository.findByIdBet(cbsr.getIdBet());
+            if(bet.isPresent()){
+                Bet be=bet.get();
+                be.setState(BetState.valueOf(cbsr.getState()));
+                betRepository.saveAndFlush(be);
+            }
+        } catch (Exception e){
+            return ResponseEntity.badRequest().body(new MessageResponse(e.getMessage()));
+        }
+        return ResponseEntity.ok(new MessageResponse("Bet State changed successfully!"));
+    }
 
     @GetMapping(value = "/userbets", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_BETTER')")

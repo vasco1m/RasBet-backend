@@ -69,10 +69,9 @@ public class Notification {
         this.description = description;
     }
 
-    public Notification(int idNotification, int nif, LocalDateTime date, String title, String description) {
-        this.idNotification = idNotification;
+    public Notification(int nif, String title, String description) {
         this.nif = nif;
-        this.date = date;
+        this.date = LocalDateTime.now();
         this.title = title;
         this.description = description;
     }
