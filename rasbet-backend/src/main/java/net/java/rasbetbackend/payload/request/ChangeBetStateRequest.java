@@ -4,13 +4,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Service
 @Component
 public class ChangeBetStateRequest {
     @NotBlank
     private String state;
-    @NotBlank
+    @NotNull
     private int idBet;
 
     public String getState() {

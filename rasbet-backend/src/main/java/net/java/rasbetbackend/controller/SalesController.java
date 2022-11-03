@@ -17,7 +17,7 @@ import javax.validation.Valid;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/sales")
+@RequestMapping("/sales")
 public class SalesController {
 
     @Autowired
@@ -43,7 +43,8 @@ public class SalesController {
                     Sale sale = new Sale(
                             game.getIdGame(),
                             salesRequest.getValidationTime(),
-                            SaleState.Available
+                            SaleState.Available,
+                            salesRequest.getMultiplier()
                     );
                     saleRepository.save(sale);
                 }
@@ -52,7 +53,8 @@ public class SalesController {
                 Sale sale = new Sale(
                         salesRequest.getIdGame(),
                         salesRequest.getValidationTime(),
-                        SaleState.Available
+                        SaleState.Available,
+                        salesRequest.getMultiplier()
                 );
                 saleRepository.save(sale);
             }

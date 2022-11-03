@@ -8,11 +8,9 @@ import net.java.rasbetbackend.repository.BetRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -25,7 +23,7 @@ public class BetController {
 
     @PostMapping("/change_state")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> changeState(ChangeBetStateRequest cbsr){
+    public ResponseEntity<?> changeState(@Valid @RequestBody ChangeBetStateRequest cbsr){
         if(!betRepository.existsByIdBet(cbsr.getIdBet())){ return ResponseEntity.badRequest().body(new MessageResponse("Error: Bet Non-Existing!")); }
         try{
             Optional<Bet> bet = betRepository.findByIdBet(cbsr.getIdBet());
