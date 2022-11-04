@@ -1,5 +1,7 @@
 package net.java.rasbetbackend.controller;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -8,6 +10,8 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import net.java.rasbetbackend.exception.AgeException;
+import net.java.rasbetbackend.payload.request.ChangeUserDataRequest;
+import net.java.rasbetbackend.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,12 +19,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import net.java.rasbetbackend.model.UserType;
 import net.java.rasbetbackend.model.Role;
 import net.java.rasbetbackend.model.User;
@@ -51,6 +50,9 @@ public class AuthController {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    EmailService emailService;
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -136,5 +138,41 @@ public class AuthController {
         }
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    private boolean validCode(String code){
+        if(LocalDateTime.ofEpochSecond(Long.parseLong(code), 0, ZoneOffset.MAX).isAfter(LocalDateTime.now())) return true;
+        return false;
+    }
+
+    private String createCode(){
+        Long seconds = LocalDateTime.now().plusMinutes(5).toEpochSecond(ZoneOffset.MAX);
+        return seconds.toString();
+    }
+
+    @PostMapping("/changeData/confirm")
+    public ResponseEntity<?> changeUserDataConfirmed(@Valid @RequestBody ChangeUserDataRequest changeUserDataRequest, Authentication authentication) {
+        User user = userRepository.findByUsername(authentication.getName()).get();
+        if(validCode(changeUserDataRequest.getCode())) {
+            if (changeUserDataRequest.getUsername() != "" && changeUserDataRequest.getUsername() != null) user.setUsername(changeUserDataRequest.getUsername());
+            if (changeUserDataRequest.getEmail() != "" && changeUserDataRequest.getEmail() != null) user.setEmail(changeUserDataRequest.getEmail());
+            if (changeUserDataRequest.getPassword() != "" && changeUserDataRequest.getPassword() != null)
+                user.setPassword(encoder.encode(changeUserDataRequest.getPassword()));
+            userRepository.saveAndFlush(user);
+            return ResponseEntity.ok(new MessageResponse("User data changed successfully"));
+        }
+        return ResponseEntity.badRequest().body(new MessageResponse("Code provided is invalid."));
+    }
+
+    @GetMapping("/changeData")
+    public ResponseEntity<?> changeUserData(Authentication authentication) {
+        User user = userRepository.findByUsername(authentication.getName()).get();
+        try {
+            emailService.sendMail(user.getEmail(), "Change user data", "Your code is: " + createCode());
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body("Error: An error occurred.");
+        }
+        return ResponseEntity.ok(new MessageResponse("Code sent successfully."));
     }
 }
