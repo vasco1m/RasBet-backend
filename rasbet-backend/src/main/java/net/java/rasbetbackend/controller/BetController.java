@@ -147,5 +147,33 @@ public class BetController {
         return ResponseEntity.ok(new MessageResponse("Bet created successfully!"));
     }
 
+    @PostMapping(value = "/allbets", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_BETTER')")
+    public ResponseEntity<?> getAllBets(@RequestBody Authentication authentication){
+        if(userRepository.existsByUsername(authentication.getName())){
+            User user = userRepository.findByUsername(authentication.getName()).get();
+            List<JSONObject> objects = new ArrayList<>();
+            for(Optional<Bet> oBet: betRepository.findAllByNif((int) user.getNif())){
+                if (oBet.isPresent()){
+                    Bet b = oBet.get();
+                    JSONObject obj = new JSONObject();
+                    obj.put("idBet", b.getIdBet());
+                    obj.put("nif", b.getNif());
+                    obj.put("value", b.getValue());
+                    obj.put("dateTime", b.getDateTime());
+                    obj.put("state", b.getState());
+                    obj.put("odd", b.getOdd());
+                    obj.put("idGame", b.getIdGame());
+                    obj.put("type", b.getType());//TODO nao me lembro se é este type ou o do Game
+                    objects.add(obj);
+                }
+            }
+            return ResponseEntity.ok(new MessageResponse(objects.toString()));
+        }
+        else return ResponseEntity
+                .badRequest()
+                .body(new MessageResponse("Error: Invalid User!"));
+    }
+
 
 }

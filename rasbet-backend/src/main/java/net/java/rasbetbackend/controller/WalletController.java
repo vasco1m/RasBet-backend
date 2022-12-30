@@ -2,6 +2,7 @@ package net.java.rasbetbackend.controller;
 
 import net.java.rasbetbackend.model.Wallet;
 import net.java.rasbetbackend.payload.request.WalletRequest;
+import net.java.rasbetbackend.payload.request.IntRequest;
 import net.java.rasbetbackend.payload.response.MessageResponse;
 import net.java.rasbetbackend.repository.UserRepository;
 import net.java.rasbetbackend.repository.WalletRepository;
@@ -73,6 +74,29 @@ public class WalletController {
         walletRepository.saveAndFlush(wallet);
 
         return ResponseEntity.ok(new MessageResponse("Money added successfully!"));
+    }
+
+    @PostMapping(value = "/balance", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_BETTER')")
+    public ResponseEntity<?> getBalance(@RequestBody Authentication authentication) {
+        Wallet wallet;
+        if(walletRepository.existsByNif((int) userRepository.findByUsername(authentication.getName()).get().getNif())){
+            Optional<Wallet> walletOptional = walletRepository.findByNif((int) userRepository.findByUsername(authentication.getName()).get().getNif());
+            wallet = walletOptional.get();
+        }
+        else{
+            wallet = new Wallet((int) userRepository.findByUsername(authentication.getName()).get().getNif(), 0.0);
+            walletRepository.save(wallet);
+        }
+
+        return ResponseEntity.ok(wallet.getBudget());
+    }
+
+    @PostMapping(value = "/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ROLE_BETTER')")
+    public ResponseEntity<?> getTransactions(@RequestBody Authentication authentication) {
+
+        return ResponseEntity.badRequest().body("Error: An error occurred.");
     }
 
 }

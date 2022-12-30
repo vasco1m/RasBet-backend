@@ -175,4 +175,19 @@ public class AuthController {
         }
         return ResponseEntity.ok(new MessageResponse("Code sent successfully."));
     }
+
+    @GetMapping("/delete")
+    public ResponseEntity<?> deleteUserData(Authentication authentication){
+        User user = userRepository.findByUsername(authentication.getName()).get();
+        if(!userRepository.existsByNif((int) user.getNif()) || !userRepository.existsByUsername(user.getUsername()) || !userRepository.existsByEmail(user.getEmail()) ){
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Account already deleted!"));
+        }
+        else{
+            userRepository.delete(user);
+        }
+        return ResponseEntity.ok(new MessageResponse("Account deleted successfully!"));
+    }
+
 }
