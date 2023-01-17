@@ -99,10 +99,9 @@ public class Game {
 
     public Game(String idApi, boolean type, LocalDateTime dateTime, int idCategory) {
         this.apiID = idApi;
-        this.idGame = idGame;
         this.type = type;
-        this.dateTime = dateTime;
         this.idCategory = idCategory;
-        this.dateTime = LocalDateTime.now();
+        this.dateTime = dateTime;
+        this.result = -2;
     }
 }
