@@ -34,7 +34,7 @@ public class WalletController {
     TransactionRepository transactionRepository;
 
 
-    @GetMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/add")
     @PreAuthorize("hasRole('ROLE_BETTER')")
     public ResponseEntity<?> addFounds(@RequestBody WalletRequest walletRequest, Authentication authentication) {
 
@@ -58,7 +58,7 @@ public class WalletController {
         return ResponseEntity.ok(new MessageResponse("Money added successfully!"));
     }
 
-    @GetMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/get", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_BETTER')")
     public ResponseEntity<?> getFounds(@RequestBody WalletRequest walletRequest, Authentication authentication) {
 
@@ -84,12 +84,12 @@ public class WalletController {
 
         walletRepository.saveAndFlush(wallet);
 
-        return ResponseEntity.ok(new MessageResponse("Money added successfully!"));
+        return ResponseEntity.ok(new MessageResponse("Money removed successfully!"));
     }
 
-    @PostMapping(value = "/balance", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/balance")
     @PreAuthorize("hasRole('ROLE_BETTER')")
-    public ResponseEntity<?> getBalance(@RequestBody Authentication authentication) {
+    public ResponseEntity<?> getBalance(Authentication authentication) {
         Wallet wallet;
         if(walletRepository.existsByNif((int) userRepository.findByUsername(authentication.getName()).get().getNif())){
             Optional<Wallet> walletOptional = walletRepository.findByNif((int) userRepository.findByUsername(authentication.getName()).get().getNif());
