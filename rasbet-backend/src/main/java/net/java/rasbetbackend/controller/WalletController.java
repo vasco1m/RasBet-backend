@@ -1,9 +1,11 @@
 package net.java.rasbetbackend.controller;
 
+import net.java.rasbetbackend.model.Transaction;
+import net.java.rasbetbackend.model.TransactionType;
 import net.java.rasbetbackend.model.Wallet;
 import net.java.rasbetbackend.payload.request.WalletRequest;
-import net.java.rasbetbackend.payload.request.IntRequest;
 import net.java.rasbetbackend.payload.response.MessageResponse;
+import net.java.rasbetbackend.repository.TransactionRepository;
 import net.java.rasbetbackend.repository.UserRepository;
 import net.java.rasbetbackend.repository.WalletRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class WalletController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    TransactionRepository transactionRepository;
+
 
     @GetMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ROLE_BETTER')")
@@ -44,6 +49,9 @@ public class WalletController {
         }
 
         wallet.setBudget(wallet.getBudget() + walletRequest.getValue());
+
+        Transaction transaction = new Transaction((int) userRepository.findByUsername(authentication.getName()).get().getNif(), TransactionType.AddFounds, walletRequest.getValue());
+        transactionRepository.saveAndFlush(transaction);
 
         walletRepository.saveAndFlush(wallet);
 
@@ -71,6 +79,9 @@ public class WalletController {
         }
         wallet.setBudget(wallet.getBudget() - walletRequest.getValue());
 
+        Transaction transaction = new Transaction((int) userRepository.findByUsername(authentication.getName()).get().getNif(), TransactionType.RemoveFounds, 0 - walletRequest.getValue());
+        transactionRepository.saveAndFlush(transaction);
+
         walletRepository.saveAndFlush(wallet);
 
         return ResponseEntity.ok(new MessageResponse("Money added successfully!"));
@@ -90,13 +101,6 @@ public class WalletController {
         }
 
         return ResponseEntity.ok(wallet.getBudget());
-    }
-
-    @PostMapping(value = "/transactions", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ROLE_BETTER')")
-    public ResponseEntity<?> getTransactions(@RequestBody Authentication authentication) {
-
-        return ResponseEntity.badRequest().body("Error: An error occurred.");
     }
 
 }
